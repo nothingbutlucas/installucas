@@ -115,6 +115,6 @@ if [ "$(id -u)" == "0" ]; then
 	make-installation
 
 else
-	echo -e "\n${RED_COLOUR}[!] Necesitas la herramienta como root para poder instalar las bibliotecas!${END_COLOUR}"
+	echo -e "\n${RED_COLOUR}[!] Necesitas ejecutar la herramienta como root para poder instalar las bibliotecas!${END_COLOUR}"
 	sleep 1800
 fi
