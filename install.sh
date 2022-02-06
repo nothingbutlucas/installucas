@@ -11,6 +11,8 @@ PURPLE_COLOUR="\e[0;35m\033[1m"
 CYAN_COLOUR="\e[0;36m\033[1m"
 GRAY_COLOUR="\e[0;37m\033[1m"
 
+# CONSTANTES
+
 NVIM="$HOME/.local/bin/nvim.appimage"
 GLOBAL_EXTRA_CONF="$HOME/global_extra_conf.py"
 YCM_REQUIREMENTS="build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm"
@@ -31,46 +33,74 @@ function ctrl_c(){
 	exit 0
 }
 
+# print-centered function provided by TrinityCoder
+# https://gist.github.com/TrinityCoder/911059c83e5f7a351b785921cf7ecdaa
+
+function print-centered {
+     [[ $# == 0 ]] && return 1
+
+     declare -i TERM_COLS="$(tput cols)"
+     declare -i str_len="${#1}"
+     [[ $str_len -ge $TERM_COLS ]] && {
+          echo "$1";
+          return 0;
+     }
+
+     declare -i filler_len="$(( (TERM_COLS - str_len) / 2 ))"
+     [[ $# -ge 2 ]] && ch="${2:0:1}" || ch=" "
+     filler=""
+     for (( i = 0; i < filler_len; i++ )); do
+          filler="${filler}${ch}"
+     done
+
+     printf "%s%s%s" "$filler" "$1" "$filler"
+     [[ $(( (TERM_COLS - str_len) % 2 )) -ne 0 ]] && printf "%s" "${ch}"
+     printf "\n"
+
+     return 0
+}
+
 function banner(){
     tput civis
     echo -e "${PURPLE_COLOUR}"
     if [ $TERMINAL_COLS -ge 87 ]; then
-        echo -e "██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ██╗   ██╗ ██████╗ █████╗ ███████╗"
+        print-centered "██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ██╗   ██╗ ██████╗ █████╗ ███████╗"
         ${LITTLE_SLEEP}
-        echo -e "██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██║   ██║██╔════╝██╔══██╗██╔════╝"
+        print-centered "██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██║   ██║██╔════╝██╔══██╗██╔════╝"
         ${LITTLE_SLEEP}
-        echo -e "██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     ██║   ██║██║     ███████║███████╗"
+        print-centered "██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     ██║   ██║██║     ███████║███████╗"
         ${LITTLE_SLEEP}
-        echo -e "██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██║   ██║██║     ██╔══██║╚════██║"
+        print-centered "██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██║   ██║██║     ██╔══██║╚════██║"
         ${LITTLE_SLEEP}
-        echo -e "██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗╚██████╔╝╚██████╗██║  ██║███████║"
+        print-centered "██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗╚██████╔╝╚██████╗██║  ██║███████║"
         ${LITTLE_SLEEP}
-        echo -e "╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝"
+        print-centered "╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝"
 
     elif [ $TERMINAL_COLS -ge 64 ]; then
-        echo -e "    ____              __          __ __                         "
+        print-centered "    ____              __          __ __                         "
         ${LITTLE_SLEEP}
-        echo -e "   /  _/____   _____ / /_ ____ _ / // /__  __ _____ ____ _ _____"
+        print-centered "   /  _/____   _____ / /_ ____ _ / // /__  __ _____ ____ _ _____"
         ${LITTLE_SLEEP}
-        echo -e "   / / / __ \ / ___// __// __  // // // / / // ___// __  // ___/"
+        print-centered "   / / / __ \ / ___// __// __  // // // / / // ___// __  // ___/"
         ${LITTLE_SLEEP}
-        echo -e " _/ / / / / /(__  )/ /_ / /_/ // // // /_/ // /__ / /_/ /(__  ) "
+        print-centered " _/ / / / / /(__  )/ /_ / /_/ // // // /_/ // /__ / /_/ /(__  ) "
         ${LITTLE_SLEEP}
-        echo -e "/___//_/ /_//____/ \__/ \__,_//_//_/ \__,_/ \___/ \__,_//____/  " 
+        print-centered "/___//_/ /_//____/ \__/ \__,_//_//_/ \__,_/ \___/ \__,_//____/  " 
 
     elif [ $TERMINAL_COLS -ge 26 ]; then
-        echo -e "                          "
+        print-centered "                          "
         ${LITTLE_SLEEP}
-        echo -e " ._   __/__  //   _  _   _"
+        print-centered " ._   __/__  //   _  _   _"
         ${LITTLE_SLEEP}
-        echo -e "// /_\ / /_|///_//_ /_|_\ "
+        print-centered "// /_\ / /_|///_//_ /_|_\ "
         ${LITTLE_SLEEP}
-        echo -e "                          "
+        print-centered "                          "
     else
-        echo -e "installucas"
+        print-centered "installucas"
     fi
     echo -e "\n"
-    echo -e "made by nothingbutlucas - 2022${END_COLOUR}\n"
+    print-centered "made by nothingbutlucas - 2022"
+    echo -e "${END_COLOUR}\n"
     sleep 1 
 }
 
@@ -79,7 +109,7 @@ function loading-time(){
         do
             tput cup 7 0
             
-            echo -n "El script va a empezar a correr en $i segundos "
+            print-centered "El script va a empezar a correr en $i segundos "
 
             sleep 1
         done
@@ -88,11 +118,12 @@ function loading-time(){
 function disclaimer(){
     
     tput civis
-    echo -e "${RED_COLOUR}[ ! ]ADVERTENCIA"
-    echo -e "Este script esta en version de prueba"
-    echo -e "Te recomiendo que le tires un cat y leas lo que hace antes de ejecutarlo"
-    echo -e "Esta pensado para ejecutarse en un sistema con Ubuntu 20.4 lts, por lo que puede que algunos paquetes y sus versiones no sean las indicadas para TU sistema"
-    echo -e "Fijate que onda (Para skipear este mensaje agrega la flag -q)"
+    echo -e "${RED_COLOUR}"
+    print-centered "[ ! ] ADVERTENCIA [ ! ]"
+    print-centered "Este script esta en version de prueba"
+    print-centered "Te recomiendo que le tires un cat y leas lo que hace antes de ejecutarlo"
+    print-centered "Esta pensado para ejecutarse en un sistema con Ubuntu 20.4 lts, por lo que puede que algunos paquetes y sus versiones no sean las indicadas para TU sistema"
+    print-centered "Fijate que onda (Para skipear este mensaje agrega la flag -q)"
     loading-time
     tput rmcup
     clear
@@ -371,8 +402,10 @@ if [[ $quiet = 'false' ]];then
 fi 
 
 if [ "$(id -u)" == "0" ]; then       
-        echo -e "\n${RED_COLOUR}[!] Si ejecutas la herramienta como root, se va a instalar toda la paqueteria para tu usuario root..."
-        echo -e "La instalacion comenzara en 10 segundos, podes cancelarla con Ctrl + c${END_COLOUR}"
+        echo -e "${RED_COLOUR}"
+        print-centered "\n[!] Si ejecutas la herramienta como root, se va a instalar toda la paqueteria para tu usuario root..."
+        print-centered "La instalacion comenzara en 10 segundos, podes cancelarla con Ctrl + c"
+        echo -e "${END_COLOUR}"
         sleep 10
         main
 else 
