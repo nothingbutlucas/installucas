@@ -15,46 +15,115 @@ NVIM="$HOME/.local/bin/nvim.appimage"
 GLOBAL_EXTRA_CONF="$HOME/global_extra_conf.py"
 YCM_REQUIREMENTS="build-essential cmake vim-nox python3-dev mono-complete golang nodejs default-jdk npm"
 DPKG_S="dpkg -s"
-SLEEP="sleep 0.5"
+SLEEP="sleep 0.1"
+LITTLE_SLEEP="sleep 0.05"
 ZSH="$HOME/.zshrc"
+TERMINAL_COLS="$(tput cols)"
+TERMINAL_ROWS="$(tput lines)"
+
 
 trap ctrl_c INT
 
 function ctrl_c(){
 	echo -e "\n${RED_COLOUR}[ X ] Cancelando instalación...\n${END_COLOUR}"
-	tput cnorm
+    tput rmcup
+    tput cnorm
 	exit 0
 }
 
 function banner(){
+    tput civis
+    echo -e "${PURPLE_COLOUR}"
+    if [ $TERMINAL_COLS -ge 87 ]; then
+        echo -e "██╗███╗   ██╗███████╗████████╗ █████╗ ██╗     ██╗     ██╗   ██╗ ██████╗ █████╗ ███████╗"
+        ${LITTLE_SLEEP}
+        echo -e "██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║     ██║     ██║   ██║██╔════╝██╔══██╗██╔════╝"
+        ${LITTLE_SLEEP}
+        echo -e "██║██╔██╗ ██║███████╗   ██║   ███████║██║     ██║     ██║   ██║██║     ███████║███████╗"
+        ${LITTLE_SLEEP}
+        echo -e "██║██║╚██╗██║╚════██║   ██║   ██╔══██║██║     ██║     ██║   ██║██║     ██╔══██║╚════██║"
+        ${LITTLE_SLEEP}
+        echo -e "██║██║ ╚████║███████║   ██║   ██║  ██║███████╗███████╗╚██████╔╝╚██████╗██║  ██║███████║"
+        ${LITTLE_SLEEP}
+        echo -e "╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝  ╚═════╝╚═╝  ╚═╝╚══════╝"
 
-echo -e "${PURPLE_COLOUR}    ____              __          __ __                         ${END_COLOUR}"
-echo -e "${PURPLE_COLOUR}   /  _/____   _____ / /_ ____ _ / // /__  __ _____ ____ _ _____${END_COLOUR}"
-echo -e "${PURPLE_COLOUR}   / / / __ \ / ___// __// __  // // // / / // ___// __  // ___/${END_COLOUR}"
-echo -e "${PURPLE_COLOUR} _/ / / / / /(__  )/ /_ / /_/ // // // /_/ // /__ / /_/ /(__  ) ${END_COLOUR}"
-echo -e "${PURPLE_COLOUR}/___//_/ /_//____/ \__/ \__,_//_//_/ \__,_/ \___/ \__,_//____/  ${END_COLOUR}"
+    elif [ $TERMINAL_COLS -ge 64 ]; then
+        echo -e "    ____              __          __ __                         "
+        ${LITTLE_SLEEP}
+        echo -e "   /  _/____   _____ / /_ ____ _ / // /__  __ _____ ____ _ _____"
+        ${LITTLE_SLEEP}
+        echo -e "   / / / __ \ / ___// __// __  // // // / / // ___// __  // ___/"
+        ${LITTLE_SLEEP}
+        echo -e " _/ / / / / /(__  )/ /_ / /_/ // // // /_/ // /__ / /_/ /(__  ) "
+        ${LITTLE_SLEEP}
+        echo -e "/___//_/ /_//____/ \__/ \__,_//_//_/ \__,_/ \___/ \__,_//____/  " 
 
-echo -e "\n"
-echo -e "${PURPLE_COLOUR}made by nothingbutlucas - 2022${END_COLOUR}\n"
-sleep 1 
+    elif [ $TERMINAL_COLS -ge 26 ]; then
+        echo -e "                          "
+        ${LITTLE_SLEEP}
+        echo -e " ._   __/__  //   _  _   _"
+        ${LITTLE_SLEEP}
+        echo -e "// /_\ / /_|///_//_ /_|_\ "
+        ${LITTLE_SLEEP}
+        echo -e "                          "
+    else
+        echo -e "installucas"
+    fi
+    echo -e "\n"
+    echo -e "made by nothingbutlucas - 2022${END_COLOUR}\n"
+    sleep 1 
 }
 
+function loading-time(){
+    for i in {20..1}
+        do
+            tput cup 7 0
+            
+            echo -n "El script va a empezar a correr en $i segundos "
+
+            sleep 1
+        done
+}
+
+function disclaimer(){
+    
+    tput civis
+    echo -e "${RED_COLOUR}[ ! ]ADVERTENCIA"
+    echo -e "Este script esta en version de prueba"
+    echo -e "Te recomiendo que le tires un cat y leas lo que hace antes de ejecutarlo"
+    echo -e "Esta pensado para ejecutarse en un sistema con Ubuntu 20.4 lts, por lo que puede que algunos paquetes y sus versiones no sean las indicadas para TU sistema"
+    echo -e "Fijate que onda (Para skipear este mensaje agrega la flag -q)"
+    loading-time
+    tput rmcup
+    clear
+}
 
 function make-installation(){
 
     echo -e "${YELLOW_COLOUR}[ ~ ]Vamos a instalar las cosas...${END_COLOUR}"
-    ${SLEEP}
+    sleep 1
     install-zsh
+    ${SLEEP}
     install-nvim
+    ${SLEEP}
     install-vim-plug
+    ${SLEEP}
     install-ycm-conf-file
+    ${SLEEP}
     install-ycm-requirements
+    ${SLEEP}
     install-git-delta
+    ${SLEEP}
     install-bat
+    ${SLEEP}
     install-fzf
+    ${SLEEP}
     install-lsd
+    ${SLEEP}
     install-ranger
+    ${SLEEP}
     install-nvim-plug
+    ${SLEEP}
 }
 
 function install-zsh(){
@@ -96,7 +165,7 @@ function install-nvim(){
         echo -e "${GREEN_COLOUR}[ + ]Ya instale el nvim${END_COLOUR}"
 
     else
-        echo -e "${CYAN_COLOUR}[ ~ ]El nvim ya existe, sigo con otra cosa${END_COLOUR}"
+        echo -e "${CYAN_COLOUR}[ ~ ]El nvim ya esta instalado${END_COLOUR}"
     fi
 }
 
@@ -110,7 +179,7 @@ function install-vim-plug(){
 
         echo -e "${GREEN_COLOUR}[ + ]Ya instale el vim-plug"
     else
-        echo -e "${CYAN_COLOUR}[ ~ ]Plug-vim ya existe, sigo con otra cosa${END_COLOUR}"
+        echo -e "${CYAN_COLOUR}[ ~ ]Plug-vim ya esta instalado${END_COLOUR}"
     fi
 }
 
@@ -130,7 +199,7 @@ function install-ycm-conf-file(){
         echo -e "${GREEN_COLOUR}[ + ]Ya cree el archivo ${GLOBAL_EXTRA_CONF}${END_COLOUR}"
 
     else
-        echo -e "${CYAN_COLOUR}[ ~ ]El archivo ${GLOBAL_EXTRA_CONF} ya existe, sigo con otra cosa${END_COLOUR}"
+        echo -e "${CYAN_COLOUR}[ ~ ]El archivo ${GLOBAL_EXTRA_CONF} ya existe${END_COLOUR}"
     fi
 }
 
@@ -277,26 +346,36 @@ function install-nvim-plug(){
 }
 
 function main(){
-    
-    tput civis
     banner
     make-installation
+    exit-program
 }
 
-# Si el usuario es root se ejecuta la función anterior sin problema. Caso contrario, se ejecuta la función, pero se le hace un print diciendole que necesita ejecutar la herramienta como root
+function exit-program(){
+    tput cnorm
+    exit 0
+}
 
-if [ "$(id -u)" == "0" ]; then
-        
+# Main Program Logic
+
+quiet='false'
+while getopts q flag
+do
+    case "${flag}" in
+        q) quiet='true' ;;
+        *) error "Unexpected option ${flag}" ;;
+    esac
+done
+if [[ $quiet = 'false' ]];then
+    disclaimer
+fi 
+
+if [ "$(id -u)" == "0" ]; then       
         echo -e "\n${RED_COLOUR}[!] Si ejecutas la herramienta como root, se va a instalar toda la paqueteria para tu usuario root..."
         echo -e "La instalacion comenzara en 10 segundos, podes cancelarla con Ctrl + c${END_COLOUR}"
         sleep 10
         main
-        tput cnorm
-        exit 0
-else
-        
-        main
-        tput cnorm
-        exit 0 
+else 
+    main
 fi
 
