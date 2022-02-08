@@ -379,7 +379,7 @@ function install-nvim-plug(){
 
     echo -e "${YELLOW_COLOUR}[ ~ ]Vamos a instalar los plugs de nvim${END_COLOUR}"
 
-    ${NVIM} +:PlugInstalll +:PlugUpdate +:q! +:q!
+    ${NVIM} +:PlugInstall +:PlugUpdate +:q! +:q!
 
     echo -e "${GREEN_COLOUR}[ + ]Ya instale los plugs de nvim${END_COLOUR}"
 }
